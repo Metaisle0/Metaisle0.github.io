@@ -1,0 +1,168 @@
+<!-- 编辑思路：
+1.设计页面，标签定位置
+2.设计样式
+3.设计动画 定时器-->
+<!Doctype html>
+
+<head>
+    <meta charset="utf-8">
+    <title>随机抽奖</title>
+    <style type="text/css">
+        #box {
+            width: 300px;
+            height: 300px;
+            /* 样式声明
+            相对定位
+            阴影 无偏移量
+            0.4透明度 */
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+
+        }
+
+        #box div,
+        #box input {
+            width: 98px;
+            height: 98px;
+            line-height: 98px;
+            border: 1px solid red;
+            position: absolute;
+
+        }
+
+        /* 横向排布 */
+        #box div:nth-child(2) {
+            left: 100px;
+
+        }
+
+        #box div:nth-child(3) {
+            left: 200px;
+        }
+
+        #box div:nth-child(4) {
+            left: 200px;
+            top: 100px;
+        }
+
+        #box div:nth-child(5) {
+            left: 200px;
+            top: 200px;
+        }
+
+        #box div:nth-child(6) {
+            left: 100px;
+            top: 200px;
+        }
+
+        #box div:nth-child(7) {
+            left: 0px;
+            top: 200px;
+        }
+
+        #box div:nth-child(8) {
+            left: 0px;
+            top: 100px;
+        }
+
+        /* 开始居中 */
+        #box input {
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            border: 1px solid red;
+            width: 100px;
+            height: 100px;
+
+        }
+
+        /* 设置div的样式 */
+        .red {
+            background-color: red;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div>一等奖</div>
+        <div>二等奖</div>
+        <div>三等奖</div>
+        <div>四等奖</div>
+        <div>五等奖</div>
+        <div>六等奖</div>
+        <div>七等奖</div>
+        <div>八等奖</div>
+        <input type="button" id="startBtn" value='开始'>
+
+    </div>
+    <!-- 抽奖结果展示 -->
+    <h2></h2>
+</body>
+<script type="text/javascript">
+
+    var box = document.getElementById("box");
+    var allDiv = box.getElementsByTagName("div");
+    var startBtn = document.getElementById("startBtn");
+    var scoreH2 = document.getElementsByTagName("h2")[0];
+    var timer = false;
+    var flag = false;
+    // 单击事件
+    startBtn.onclick = function () {
+        // 奖品编号
+        if (flag) {
+            return;
+        }
+        flag = true;
+        // 循环一次var idx = Math.ceil(Math.random() * 8);
+        var idx = Math.ceil(Math.random() * 24);//1-24号奖品
+        // idx=24;
+        // 检验随机数
+        console.log(idx);
+        // 模拟动画，设计背景，需要定时器，循环比定时器快
+        var k = 0;//allDiv下标编号0-7
+        timer = setInterval(function () {
+            // 变红色的去掉红色
+            for (var i = 0; i < allDiv.length; i++) {
+                allDiv[i].className = "";
+            }
+            // allDiv[k].className = "red";
+            allDiv[k % 8].className = "red";
+            //   如果这里比较的是k和I的值，浏览器展示效果便是循环一圈，便不会变色
+            if (k == idx - 1) {
+                // 清除计时器
+                clearTimeout(timer);
+                flag = false;
+                // 抽奖结果显示，
+                // scoreH2.innerText = "恭喜您中了" + idx + "等奖"; //一次循环
+                scoreH2.innerText = "恭喜您中了" + (idx % 8 ? idx % 8 : 8) + "等奖";
+            }
+            k++;
+            // 每过300毫秒就变色
+        }, 300)
+    }
+</script>
+
+</html>
+<!-- 随机抽奖的设计思路
+1.设置页面
+2先设置大div的样式，再设计小div的样式
+3.设计点击事件
+4.利用定时器，让图片变色
+5。设置一次循环
+6设置多次循环，利用取余的思想
+7.利用防抖的思想，解决多次点击循环错乱的问题 
+
+此次案例需要学习的点
+1.CSS常见的类选择器
+2.html中有关表的按钮
+3.区分Tag和id之间的区别
+4.定时器的建立和清除
+5作业尝试创新
+5.0修改颜色，将文字转换为图片，限制抽奖次数
+5.1设置圆形的抽奖图片
+5.2利用定时器设置轮播图，页面倒计时
+5.3仿和平精英抽奖（一个公开访问的抽奖页面）
+5.4设立多种抽奖形式-->
